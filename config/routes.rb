@@ -19,7 +19,11 @@ Rails.application.routes.draw do
   delete '/cart/:item_id', to: 'cart#remove_item'
 
   get '/registration', to: 'users#new', as: :registration
-  resources :users, only: [:create, :update]
+
+  resources :users, only: [:new, :create, :update] do
+    resources :addresses, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  end
+
   patch '/user/:id', to: 'users#update'
   get '/profile', to: 'users#show'
   get '/profile/edit', to: 'users#edit'
@@ -47,4 +51,6 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show]
     patch '/orders/:id/ship', to: 'orders#ship'
   end
+
+
 end

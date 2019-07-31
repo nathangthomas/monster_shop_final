@@ -25,9 +25,14 @@ RSpec.describe Merchant do
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @user_1 = User.create!(name: 'Megan', email: 'megan_1@example.com', password: 'securepassword')
       @user_2 = User.create!(name: 'Megan', email: 'megan_2@example.com', password: 'securepassword')
-      @order_1 = @user_1.orders.create!
-      @order_2 = @user_2.orders.create!(status: 1)
-      @order_3 = @user_2.orders.create!(status: 1)
+
+      @user_1_address = @user_1.addresses.create!(street_address: '123 user one lives here', city: 'Denver', state: 'CO', zip: 80301)
+      @user_2_address = @user_2.addresses.create!(street_address: '123 user two lives here', city: 'Denver', state: 'IA', zip: 80301)
+
+      @order_1 = @user_1.orders.create!(address_id: @user_1_address.id)
+      @order_2 = @user_2.orders.create!(status: 1, address_id: @user_2_address.id)
+      @order_3 = @user_2.orders.create!(status: 1, address_id: @user_2_address.id)
+
       @order_item_1 = @order_1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 2)
       @order_item_2 = @order_1.order_items.create!(item: @hippo, price: @hippo.price, quantity: 3)
       @order_item_3 = @order_2.order_items.create!(item: @giant, price: @hippo.price, quantity: 2)

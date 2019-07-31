@@ -1,4 +1,14 @@
 <h1><%= @user.name %></h1>
 <p><%= @user.email %></p>
-<p><%= @user.address %></p>
-<p><%= @user.city %> <%= @user.state %> <%= @user.zip %></p>
+  <% @user.addresses.each do |address|  %>
+  <section id='address-<%= address.id %>'>
+    <h4><%= address.nickname %></h4>
+    <p><%= address.street_address %></p>
+    <p><%= address.city %> <%= address.state %> <%= address.zip %>
+
+      <% if @user.orders.exclude?(address) %>
+        <p><%= button_to "Edit My Address", edit_user_address_path(@user, address), method: :get %></p>
+        <p><%= button_to "Delete Address", user_address_path(@user, address), method: :delete %></p>
+      <% end  %>
+</section>
+<% end %>
